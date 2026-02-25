@@ -51,7 +51,7 @@ class Http {
       }
     }
 
-    return $fetch<T>(url, newOptions as any)
+    return $fetch(url, newOptions as any) as Promise<T>
   }
 
   // GET 请求
