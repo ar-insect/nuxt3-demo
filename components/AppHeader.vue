@@ -26,6 +26,29 @@
         </ul>
       </nav>
 
+      <!-- User Actions -->
+      <div class="hidden md:flex items-center gap-4 ml-4">
+        <div v-if="user" class="flex items-center gap-3">
+          <NuxtLink to="/profile" class="flex items-center gap-2 text-sm font-medium text-gray-700 hover:text-indigo-600 transition-colors">
+            <img v-if="user.avatar" :src="user.avatar" class="w-8 h-8 rounded-full border border-gray-200" alt="User" />
+            <span>{{ user.name }}</span>
+          </NuxtLink>
+          <button 
+            @click="logout" 
+            class="px-4 py-2 text-sm font-medium text-red-600 bg-red-50 rounded-lg hover:bg-red-100 transition-colors"
+          >
+            Logout
+          </button>
+        </div>
+        <NuxtLink 
+          v-else 
+          to="/login"
+          class="px-4 py-2 text-sm font-medium text-white bg-green-600 rounded-lg hover:bg-green-700 shadow-lg shadow-green-500/30 transition-all hover:-translate-y-0.5"
+        >
+          Login
+        </NuxtLink>
+      </div>
+
       <!-- Mobile Menu Button (Placeholder) -->
       <button class="md:hidden p-2 rounded-md text-gray-500 hover:bg-gray-100">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -37,6 +60,7 @@
 </template>
 
 <script setup lang="ts">
+const { user, logout } = useAuth()
 const links = [
   { to: '/', text: '首页' },
   { to: '/components-demo', text: '组件' },
