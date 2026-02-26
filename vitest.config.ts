@@ -4,6 +4,7 @@ export default defineVitestConfig({
   // any custom vitest config you need
   test: {
     environment: 'happy-dom',
-    globals: true
+    globals: true,
+    css: false
   }
 })

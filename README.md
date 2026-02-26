@@ -11,6 +11,7 @@
 - **中间件**: 包含全局路由中间件示例。
 - **TypeScript**: 完善的类型定义和类型扩展。
 - **TSX 支持**: 原生支持使用 TSX/JSX 编写组件。
+- **Styled Components**: 集成 `vue3-styled-components` 支持 CSS-in-JS 样式编写。
 - **单元测试**: 集成 Vitest + @nuxt/test-utils 进行单元测试和组件测试。
 - **调试配置**: 预配置 VS Code `launch.json`，支持客户端和服务端断点调试。
 - **SSR 支持**: 包含服务端渲染 API 和页面调试示例。

@@ -17,6 +17,15 @@ export default defineNuxtConfig({
   extends: [
     './modules/user'
   ],
+  modules: [
+    // '@nuxtjs/tailwindcss'
+  ],
+  postcss: {
+    plugins: {
+      '@tailwindcss/postcss': {},
+      autoprefixer: {},
+    },
+  },
   typescript: {
     shim: false
   }
