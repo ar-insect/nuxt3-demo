@@ -10,6 +10,7 @@
         <li><NuxtLink to="/ssr-demo">SSR 调试</NuxtLink></li>
         <li><NuxtLink to="/plugins-demo">插件演示</NuxtLink></li>
         <li><NuxtLink to="/types-demo">类型演示</NuxtLink></li>
+        <li><NuxtLink to="/tsx-demo">TSX 演示</NuxtLink></li>
       </ul>
     </nav>
   </header>

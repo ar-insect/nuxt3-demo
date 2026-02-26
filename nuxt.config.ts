@@ -16,5 +16,8 @@ export default defineNuxtConfig({
   ],
   extends: [
     './modules/user'
-  ]
+  ],
+  typescript: {
+    shim: false
+  }
 })
