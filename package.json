@@ -8,7 +8,8 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "test": "vitest",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "deploy": "bash scripts/deploy.sh"
   },
   "dependencies": {
     "@heroicons/vue": "^2.2.0",
