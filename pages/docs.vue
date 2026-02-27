@@ -23,17 +23,10 @@ const scrollToHeading = (id: string) => {
       <div class="layout-grid">
         <!-- 主内容 -->
         <main class="content-wrapper">
-          <ClientOnly>
-            <ContentRenderer v-if="page" :value="page" class="markdown-body" />
-            <div v-else class="empty-state">
-              文档加载失败或内容为空
-            </div>
-            <template #fallback>
-              <div class="loading-state">
-                Loading documentation...
-              </div>
-            </template>
-          </ClientOnly>
+          <ContentRenderer v-if="page" :value="page" class="markdown-body" />
+          <div v-else class="empty-state">
+            文档加载失败或内容为空
+          </div>
           
           <div class="navigation">
             <NuxtLink to="/" class="back-link">返回首页</NuxtLink>

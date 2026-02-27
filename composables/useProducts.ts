@@ -104,10 +104,20 @@ export const useProducts = () => {
     }
   ])
 
-  const getProducts = async (): Promise<Product[]> => {
+  const getProducts = async (page: number = 1, limit: number = 8, category?: string): Promise<{ items: Product[], total: number }> => {
     return new Promise((resolve) => {
       setTimeout(() => {
-        resolve(products.value)
+        let filtered = products.value
+        if (category) {
+          filtered = filtered.filter(p => p.category === category)
+        }
+        
+        const total = filtered.length
+        const start = (page - 1) * limit
+        const end = start + limit
+        const items = filtered.slice(start, end)
+        
+        resolve({ items, total })
       }, 800)
     })
   }

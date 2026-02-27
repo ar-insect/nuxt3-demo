@@ -31,6 +31,31 @@ export default defineNuxtConfig({
       autoprefixer: {},
     },
   },
+  routeRules: {
+    // Enable ISR for docs page
+    '/docs': { isr: 3600 }, // Cache for 1 hour
+    '/products/**': { isr: 3600 }, // Also good for products but let's stick to docs request
+  },
+  nitro: {
+    storage: {
+      cache: {
+        driver: 'redis',
+        host: process.env.REDIS_HOST || 'localhost',
+        port: Number(process.env.REDIS_PORT) || 6379,
+        password: process.env.REDIS_PASSWORD || '',
+        db: Number(process.env.REDIS_DB) || 0
+      }
+    },
+    devStorage: {
+      cache: {
+        driver: 'redis',
+        host: process.env.REDIS_HOST || 'localhost',
+        port: Number(process.env.REDIS_PORT) || 6379,
+        password: process.env.REDIS_PASSWORD || '',
+        db: Number(process.env.REDIS_DB) || 0
+      }
+    }
+  },
   runtimeConfig: {
     // 服务端私有配置
     redis: {

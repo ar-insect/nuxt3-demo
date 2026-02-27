@@ -269,11 +269,13 @@ const subscribe = () => {
   email.value = ''
 }
 
-const { data: products, pending } = await useAsyncData<Product[]>(
+const { data: productsData, pending } = await useAsyncData(
   'home-products',
-  () => getProducts(),
-  { default: () => [] }
+  () => getProducts(1, 100), // Get all products for home page filtering
+  { default: () => ({ items: [], total: 0 }) }
 )
+
+const products = computed(() => productsData.value?.items || [])
 
 const primaryTint = computed(() => {
   if (!process.client) return 'rgba(59,130,246,0.22)'
