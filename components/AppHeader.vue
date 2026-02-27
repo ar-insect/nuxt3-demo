@@ -99,6 +99,7 @@ const links = [
   { to: '/plugins-demo', text: '插件' },
   { to: '/types-demo', text: '类型' },
   { to: '/pinia-demo', text: 'Pinia' },
+  { to: '/docs', text: '文档' },
   { to: '/tsx-demo', text: 'TSX' },
   { to: '/styled-demo', text: 'Styled' },
 ]
