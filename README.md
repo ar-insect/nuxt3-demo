@@ -68,7 +68,12 @@
 - **数据获取**: `useProducts`
 - **交互反馈**: `useToast`
 
-### 5. 样式方案
+### 6. 页面布局 (Layouts)
+- **`default`**: 默认布局，包含头部导航和底部版权信息。
+- **`auth`**: 认证布局，简洁的居中设计，专用于登录/注册页面。
+- **`dashboard`**: 仪表盘布局，包含侧边栏导航，适用于个人中心等管理页面。
+
+### 7. 样式方案
 - **Tailwind CSS**: 主要样式工具。
 - **Styled Components**: 演示 CSS-in-JS 方案 (`pages/styled-demo.vue`)。
 
