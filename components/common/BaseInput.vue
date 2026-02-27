@@ -1,6 +1,6 @@
 <template>
   <div class="w-full">
-    <label v-if="label" :for="id" class="block text-sm font-medium text-gray-700 mb-1">
+    <label v-if="label" :for="inputId" class="block text-sm font-medium text-gray-700 mb-1">
       {{ label }}
     </label>
     <div class="relative shadow-sm" :style="{ borderRadius: 'var(--border-radius)' }">
@@ -8,7 +8,7 @@
         <slot name="prefix"></slot>
       </div>
       <input
-        :id="id"
+        :id="inputId"
         :type="type"
         :value="modelValue"
         @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
@@ -32,10 +32,10 @@
         </svg>
       </div>
     </div>
-    <p v-if="error" class="mt-2 text-sm text-red-600" :id="`${id}-error`">
+    <p v-if="error" class="mt-2 text-sm text-red-600" :id="`${inputId}-error`">
       {{ error }}
     </p>
-    <p v-else-if="hint" class="mt-2 text-sm text-gray-500" :id="`${id}-description`">
+    <p v-else-if="hint" class="mt-2 text-sm text-gray-500" :id="`${inputId}-description`">
       {{ hint }}
     </p>
   </div>
@@ -56,9 +56,11 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   type: 'text',
   modelValue: '',
-  id: () => 'input-' + Math.random().toString(36).substr(2, 9),
   disabled: false
 })
+
+const uid = useId()
+const inputId = computed(() => props.id || uid)
 
 defineEmits(['update:modelValue'])
 </script>

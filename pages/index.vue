@@ -102,12 +102,15 @@
       </div>
 
       <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <button
+        <div
           v-for="c in categoryCards"
           :key="c.key"
-          class="group flex items-start gap-3 border border-gray-200 bg-white p-5 text-left hover:border-[var(--primary-color)]/40 hover:shadow-sm"
+          class="group flex items-start gap-3 border border-gray-200 bg-white p-5 text-left hover:border-[var(--primary-color)]/40 hover:shadow-sm cursor-pointer"
           :style="{ borderRadius: 'var(--border-radius)' }"
           @click="goToProducts({ category: c.key })"
+          role="button"
+          tabindex="0"
+          @keydown.enter="goToProducts({ category: c.key })"
         >
           <div class="flex h-11 w-11 items-center justify-center bg-[var(--primary-color)]/10" :style="{ borderRadius: 'var(--border-radius)' }">
             <component :is="c.icon" class="h-6 w-6" :style="{ color: 'var(--primary-color)' }" />
@@ -119,7 +122,7 @@
               {{ c.count }} 件商品
             </div>
           </div>
-        </button>
+        </div>
       </div>
     </section>
 
@@ -277,11 +280,13 @@ const { data: productsData, pending } = await useAsyncData(
 
 const products = computed(() => productsData.value?.items || [])
 
-const primaryTint = computed(() => {
-  if (!process.client) return 'rgba(59,130,246,0.22)'
+const primaryTint = ref('rgba(59,130,246,0.22)')
+
+onMounted(() => {
   const v = getComputedStyle(document.documentElement).getPropertyValue('--primary-color').trim()
-  if (!v) return 'rgba(59,130,246,0.22)'
-  return `${v}22`
+  if (v) {
+    primaryTint.value = `${v}22`
+  }
 })
 
 const categoryMeta: Record<string, { label: string; description: string; icon: any }> = {

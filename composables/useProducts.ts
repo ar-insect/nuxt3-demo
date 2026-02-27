@@ -21,12 +21,10 @@ export const useProducts = () => {
       "women's clothing": 'dress,fashion,woman'
     }
     const keyword = keywords[category as keyof typeof keywords] || 'product'
-    // Use a fixed seed based on ID to ensure consistent hydration, but dynamic enough
-    // Actually, to make it random on each load, we can use a timestamp or random number if we want that.
-    // But for SSR hydration match, we should be careful.
-    // However, since we fetch data in useAsyncData, the server result is passed to client.
-    // So Math.random() is fine as long as it runs on server (or client on nav).
-    return `https://loremflickr.com/400/400/${keyword.replace(/,/g, ',')}?lock=${id + Math.floor(Math.random() * 1000)}`
+    // Use a fixed seed based on ID to ensure consistent hydration
+    // 使用基于 ID 的伪随机数，确保服务端和客户端生成的 URL 一致
+    const lock = (id * 13 + 7) % 1000
+    return `https://loremflickr.com/400/400/${keyword.replace(/,/g, ',')}?lock=${lock}`
   }
 
   const products = ref<Product[]>([

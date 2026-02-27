@@ -58,8 +58,9 @@
 
 <script setup lang="ts">
 const { $logError } = useNuxtApp()
-const now = new Date()
-const fiveMinutesAgo = new Date(now.getTime() - 5 * 60 * 1000)
+// Use useState to ensure consistent time between server and client hydration
+const now = useState<number>('utils-demo-now', () => Date.now())
+const fiveMinutesAgo = computed(() => new Date(now.value - 5 * 60 * 1000))
 
 const debounceCount = ref(0)
 const throttleCount = ref(0)

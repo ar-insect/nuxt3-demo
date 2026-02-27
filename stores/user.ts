@@ -8,7 +8,7 @@ interface User {
   avatar?: string
 }
 
-export const useUserStore = defineStore('user-store', {
+export const useUserStore = defineStore('user/main', {
   state: () => ({
     currentUser: null as User | null,
     isLoggedIn: false,
