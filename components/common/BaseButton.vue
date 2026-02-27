@@ -5,9 +5,9 @@
       'inline-flex items-center justify-center border font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed',
       sizeClasses[size],
       variantClasses[variant],
-      block ? 'w-full' : '',
-      rounded ? 'rounded-md' : ''
+      block ? 'w-full' : ''
     ]"
+    :style="rounded ? { borderRadius: 'var(--border-radius)' } : undefined"
     :disabled="disabled || loading"
     @click="$emit('click', $event)"
   >

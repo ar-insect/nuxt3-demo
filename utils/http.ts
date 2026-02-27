@@ -1,3 +1,4 @@
+import { $fetch } from 'ofetch'
 import type { FetchOptions } from 'ofetch'
 
 // 定义后端返回的标准数据结构
@@ -15,8 +16,8 @@ class Http {
   }
 
   // 核心请求方法
-  private async request<T>(url: string, options: FetchOptions = {}): Promise<T> {
-    const defaultOptions: FetchOptions = {
+  private async request<T>(url: string, options: FetchOptions<any> = {}): Promise<T> {
+    const defaultOptions: FetchOptions<any> = {
       baseURL: this.baseUrl,
       // 请求拦截
       onRequest({ options }) {
@@ -42,7 +43,7 @@ class Http {
     }
 
     // 合并选项
-    const newOptions: FetchOptions = {
+    const newOptions: FetchOptions<any> = {
       ...defaultOptions,
       ...options,
       headers: {
@@ -51,11 +52,11 @@ class Http {
       }
     }
 
-    return $fetch(url, newOptions as any) as Promise<T>
+    return $fetch(url as any, newOptions as any) as any
   }
 
   // GET 请求
-  public get<T>(url: string, params?: any, options?: FetchOptions): Promise<T> {
+  public get<T>(url: string, params?: any, options?: FetchOptions<any>): Promise<T> {
     return this.request<T>(url, {
       ...options,
       method: 'GET',
@@ -64,7 +65,7 @@ class Http {
   }
 
   // POST 请求
-  public post<T>(url: string, body?: any, options?: FetchOptions): Promise<T> {
+  public post<T>(url: string, body?: any, options?: FetchOptions<any>): Promise<T> {
     return this.request<T>(url, {
       ...options,
       method: 'POST',
@@ -73,7 +74,7 @@ class Http {
   }
 
   // PUT 请求
-  public put<T>(url: string, body?: any, options?: FetchOptions): Promise<T> {
+  public put<T>(url: string, body?: any, options?: FetchOptions<any>): Promise<T> {
     return this.request<T>(url, {
       ...options,
       method: 'PUT',
@@ -82,7 +83,7 @@ class Http {
   }
 
   // DELETE 请求
-  public delete<T>(url: string, params?: any, options?: FetchOptions): Promise<T> {
+  public delete<T>(url: string, params?: any, options?: FetchOptions<any>): Promise<T> {
     return this.request<T>(url, {
       ...options,
       method: 'DELETE',

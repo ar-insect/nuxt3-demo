@@ -3,7 +3,7 @@
     <label v-if="label" :for="id" class="block text-sm font-medium text-gray-700 mb-1">
       {{ label }}
     </label>
-    <div class="relative rounded-md shadow-sm">
+    <div class="relative shadow-sm" :style="{ borderRadius: 'var(--border-radius)' }">
       <div v-if="$slots.prefix" class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
         <slot name="prefix"></slot>
       </div>
@@ -12,13 +12,14 @@
         :type="type"
         :value="modelValue"
         @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
-        class="focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md py-2"
+        class="focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 py-2"
         :class="[
           error ? 'border-red-300 text-red-900 placeholder-red-300 focus:ring-red-500 focus:border-red-500' : '',
           disabled ? 'bg-gray-100 text-gray-500 cursor-not-allowed' : '',
           $slots.prefix ? 'pl-10' : 'pl-3',
           $slots.suffix ? 'pr-10' : 'pr-3'
         ]"
+        :style="{ borderRadius: 'var(--border-radius)' }"
         :placeholder="placeholder"
         :disabled="disabled"
       />

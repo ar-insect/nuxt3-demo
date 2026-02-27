@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white overflow-hidden shadow rounded-lg divide-y divide-gray-200">
+  <div class="bg-white overflow-hidden shadow divide-y divide-gray-200" :style="{ borderRadius: 'var(--border-radius)' }">
     <div v-if="$slots.header || title" class="px-4 py-5 sm:px-6">
       <slot name="header">
         <h3 class="text-lg leading-6 font-medium text-gray-900">

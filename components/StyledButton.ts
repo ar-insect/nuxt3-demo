@@ -15,7 +15,7 @@ const StyledButton = styled('button', btnProps as any)`
   margin: 1em;
   padding: 0.25em 1em;
   border: 2px solid #00dc82;
-  border-radius: 3px;
+  border-radius: var(--border-radius);
   cursor: pointer;
   transition: all 0.2s;
 

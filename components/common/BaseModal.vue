@@ -82,7 +82,7 @@ const handleMaskClick = () => {
   width: 500px;
   max-width: 90%;
   background-color: #fff;
-  border-radius: 8px;
+  border-radius: var(--border-radius);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
   transition: all 0.3s ease;
   display: flex;
@@ -125,7 +125,7 @@ const handleMaskClick = () => {
 
 .btn {
   padding: 0.5rem 1rem;
-  border-radius: 4px;
+  border-radius: var(--border-radius);
   border: none;
   cursor: pointer;
   font-size: 1rem;

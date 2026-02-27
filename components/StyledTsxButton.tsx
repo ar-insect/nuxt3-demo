@@ -15,7 +15,7 @@ const ButtonContainer = styled('button', btnProps as any)`
   align-items: center;
   justify-content: center;
   padding: 0.75rem 1.5rem;
-  border-radius: 0.5rem;
+  border-radius: var(--border-radius);
   border: none;
   font-weight: 600;
   cursor: pointer;

@@ -47,7 +47,7 @@ const getIcon = (type: string = 'info') => {
 
 .toast-item {
   padding: 10px 20px;
-  border-radius: 4px;
+  border-radius: var(--border-radius);
   background: white;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   display: flex;
