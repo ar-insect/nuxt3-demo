@@ -8,11 +8,62 @@
       </p>
     </div>
 
+    <div class="mb-8 space-y-4 border border-gray-200 bg-white p-4" :style="{ borderRadius: 'var(--border-radius)' }">
+      <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div class="flex-1">
+          <BaseInput v-model="searchText" placeholder="Search products..." />
+        </div>
+        <div class="flex gap-2">
+          <BaseButton variant="outline" @click="applySearch">Search</BaseButton>
+          <BaseButton variant="secondary" @click="clearFilters">Clear</BaseButton>
+        </div>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-2">
+        <button
+          type="button"
+          class="px-3 py-1.5 text-sm border border-gray-200 bg-white hover:bg-gray-50"
+          :style="{ borderRadius: 'var(--border-radius)' }"
+          :class="!activeCategory ? 'bg-[var(--primary-color)]/10 border-[var(--primary-color)]/30 text-[var(--primary-color)] font-medium' : ''"
+          @click="setCategory(undefined)"
+        >
+          全部
+        </button>
+        <button
+          v-for="c in categories"
+          :key="c"
+          type="button"
+          class="px-3 py-1.5 text-sm border border-gray-200 bg-white hover:bg-gray-50 capitalize"
+          :style="{ borderRadius: 'var(--border-radius)' }"
+          :class="activeCategory === c ? 'bg-[var(--primary-color)]/10 border-[var(--primary-color)]/30 text-[var(--primary-color)] font-medium' : ''"
+          @click="setCategory(c)"
+        >
+          {{ c }}
+        </button>
+      </div>
+
+      <div v-if="activeCategory || activeQuery" class="text-sm text-gray-600">
+        当前筛选：
+        <span v-if="activeCategory" class="font-medium text-gray-900">{{ activeCategory }}</span>
+        <span v-if="activeCategory && activeQuery"> · </span>
+        <span v-if="activeQuery" class="font-medium text-gray-900">“{{ activeQuery }}”</span>
+        <span class="ml-2 text-gray-400">({{ filteredProducts.length }} 件)</span>
+      </div>
+    </div>
+
     <BaseLoading :loading="pending" text="Loading products..." />
 
-    <div v-if="!pending" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-      <BaseCard v-for="product in products" :key="product.id" class="flex flex-col h-full hover:shadow-lg transition-shadow duration-300">
-        <div class="aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-t-lg bg-gray-200 mb-4 h-48 flex items-center justify-center p-4">
+    <div v-if="!pending && filteredProducts.length === 0" class="py-16 text-center">
+      <div class="text-lg font-semibold text-gray-900">没有找到符合条件的商品</div>
+      <div class="mt-2 text-sm text-gray-600">试试清空筛选条件，或换个关键词</div>
+      <div class="mt-6 flex justify-center">
+        <BaseButton variant="secondary" @click="clearFilters">清空筛选</BaseButton>
+      </div>
+    </div>
+
+    <div v-else-if="!pending" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      <BaseCard v-for="product in filteredProducts" :key="product.id" class="flex flex-col h-full hover:shadow-lg transition-shadow duration-300">
+        <div class="aspect-w-1 aspect-h-1 w-full overflow-hidden bg-gray-200 mb-4 h-48 flex items-center justify-center p-4" :style="{ borderTopLeftRadius: 'var(--border-radius)', borderTopRightRadius: 'var(--border-radius)' }">
           <img 
             :src="product.image" 
             :alt="product.title" 
@@ -56,9 +107,72 @@
 <script setup lang="ts">
 import { useProducts, type Product } from '~/composables/useProducts'
 
+const route = useRoute()
+const router = useRouter()
 const { getProducts } = useProducts()
 
 const { data: products, pending } = await useAsyncData<Product[]>('products', () => getProducts(), {
   default: () => []
 })
+
+const searchText = ref<string>((route.query.q as string) || '')
+
+watch(
+  () => route.query.q,
+  (q) => {
+    searchText.value = (q as string) || ''
+  }
+)
+
+const activeCategory = computed<string | undefined>(() => {
+  const v = route.query.category
+  return typeof v === 'string' && v.trim() ? v : undefined
+})
+
+const activeQuery = computed<string>(() => {
+  const v = route.query.q
+  return typeof v === 'string' ? v.trim() : ''
+})
+
+const categories = computed(() => {
+  const set = new Set(products.value.map(p => p.category))
+  return [...set].sort((a, b) => a.localeCompare(b))
+})
+
+const filteredProducts = computed(() => {
+  const category = activeCategory.value
+  const q = activeQuery.value.toLowerCase()
+  return products.value.filter((p) => {
+    const okCategory = category ? p.category === category : true
+    const okQ = q
+      ? `${p.title} ${p.description} ${p.category}`.toLowerCase().includes(q)
+      : true
+    return okCategory && okQ
+  })
+})
+
+const setCategory = (category?: string) => {
+  router.push({
+    path: '/products',
+    query: {
+      ...route.query,
+      category: category || undefined
+    }
+  })
+}
+
+const applySearch = () => {
+  const q = searchText.value.trim()
+  router.push({
+    path: '/products',
+    query: {
+      ...route.query,
+      q: q || undefined
+    }
+  })
+}
+
+const clearFilters = () => {
+  router.push({ path: '/products' })
+}
 </script>
