@@ -29,6 +29,18 @@ export default defineNuxtConfig({
       autoprefixer: {},
     },
   },
+  runtimeConfig: {
+    // 服务端私有配置
+    redis: {
+      host: process.env.REDIS_HOST || 'localhost',
+      port: Number(process.env.REDIS_PORT) || 6379,
+      password: process.env.REDIS_PASSWORD || '',
+      db: Number(process.env.REDIS_DB) || 0
+    },
+    public: {
+      // 客户端公共配置
+    }
+  },
   typescript: {
     shim: false
   }

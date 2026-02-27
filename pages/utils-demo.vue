@@ -37,6 +37,19 @@
       </div>
     </section>
 
+    <section>
+      <h2>错误处理演示 (plugins/error-handler.ts)</h2>
+      <div class="demo-item">
+        <p>请打开控制台 (F12) 查看日志输出</p>
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+          <button @click="triggerVueError" class="error-btn">触发 Vue 错误</button>
+          <button @click="triggerPromiseError" class="error-btn">触发 Promise 错误</button>
+          <button @click="triggerManualError" class="error-btn">手动记录错误</button>
+          <button @click="triggerThrowError" class="error-btn">直接抛出异常</button>
+        </div>
+      </div>
+    </section>
+
     <div style="margin-top: 20px;">
       <NuxtLink to="/">返回首页</NuxtLink>
     </div>
@@ -44,6 +57,7 @@
 </template>
 
 <script setup lang="ts">
+const { $logError } = useNuxtApp()
 const now = new Date()
 const fiveMinutesAgo = new Date(now.getTime() - 5 * 60 * 1000)
 
@@ -57,6 +71,30 @@ const handleDebounceClick = debounce(() => {
 const handleThrottleClick = throttle(() => {
   throttleCount.value++
 }, 1000)
+
+// 错误处理演示方法
+const triggerVueError = () => {
+  // @ts-ignore - 故意调用不存在的方法
+  undefinedFunction()
+}
+
+const triggerPromiseError = () => {
+  new Promise((_, reject) => {
+    reject(new Error('这是一个未捕获的 Promise 错误'))
+  })
+}
+
+const triggerManualError = () => {
+  try {
+    throw new Error('这是一个被捕获并手动记录的错误')
+  } catch (e) {
+    $logError(e, 'User Triggered Manual Error')
+  }
+}
+
+const triggerThrowError = () => {
+  throw new Error('这是一个直接抛出的常规错误')
+}
 </script>
 
 <style scoped>
@@ -82,5 +120,15 @@ h2 {
 button {
   padding: 0.5rem 1rem;
   cursor: pointer;
+}
+.error-btn {
+  background-color: #fee2e2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+.error-btn:hover {
+  background-color: #fecaca;
 }
 </style>

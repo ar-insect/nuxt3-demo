@@ -6,11 +6,13 @@ export {} // 确保这是个模块
 declare module '#app' {
   interface NuxtApp {
     $myHelper(msg: string): string
+    $logError(error: unknown, context?: string): void
   }
 }
 
 declare module 'vue' {
   interface ComponentCustomProperties {
     $myHelper(msg: string): string
+    $logError(error: unknown, context?: string): void
   }
 }

@@ -109,6 +109,47 @@ npx vitest
     -   在 `server/api/` 或 `app.vue` 的 script setup 中打断点。
     -   访问对应页面触发逻辑。
 
+## 📝 错误日志
+
+本项目集成了全局错误捕获插件 `plugins/error-handler.ts`，并支持将错误日志**持久化存储到 Redis**。
+
+### 配置 Redis
+
+在 `.env` 文件中配置 Redis 连接信息 (可选，默认连接本地 localhost:6379):
+
+```env
+REDIS_HOST=localhost
+REDIS_PORT=6379
+REDIS_PASSWORD=your_password
+REDIS_DB=0
+```
+
+### 日志存储
+
+日志将以 JSON 格式存储在 Redis 的 List 结构中，Key 为 `app:logs`。系统会自动保留最近 1000 条日志。
+
+### 捕获类型
+
+1.  **Vue 组件错误**: 生命周期钩子、渲染函数、事件处理器中的异常。
+2.  **Nuxt 应用错误**: 插件初始化、中间件、路由守卫中的异常。
+3.  **Promise 未捕获异常**: 全局未处理的 Promise Rejection。
+4.  **全局脚本错误**: 常规 JS 运行时错误。
+
+**手动记录错误**:
+
+```ts
+const { $logError } = useNuxtApp()
+
+try {
+  // ...
+} catch (e) {
+  $logError(e, 'Custom Context')
+}
+```
+
+**查看日志**:
+在开发环境下，错误日志会详细输出到浏览器控制台 (Console)，包含错误类型、堆栈信息、组件名称等结构化数据。
+
 ## 🔗 演示页面
 
 启动项目后，访问以下路径查看功能演示：
