@@ -31,10 +31,20 @@ export default defineNuxtConfig({
       autoprefixer: {},
     },
   },
+  experimental: {
+    appManifest: true
+  },
+  // Configure MDC (Markdown Components) for Nuxt Content
+  mdc: {
+    highlight: {
+      theme: 'github-dark',
+      preload: ['ts', 'js', 'css', 'json', 'vue', 'bash', 'html', 'md', 'yaml']
+    }
+  },
   routeRules: {
-    // Enable ISR for docs page
-    '/docs': { isr: 3600 }, // Cache for 1 hour
-    '/products/**': { isr: 3600 }, // Also good for products but let's stick to docs request
+    // Enable ISR (Incremental Static Regeneration)
+    '/docs': { swr: true },
+    '/products/**': { swr: 3600 },
   },
   nitro: {
     storage: {
@@ -43,7 +53,8 @@ export default defineNuxtConfig({
         host: process.env.REDIS_HOST || 'localhost',
         port: Number(process.env.REDIS_PORT) || 6379,
         password: process.env.REDIS_PASSWORD || '',
-        db: Number(process.env.REDIS_DB) || 0
+        db: Number(process.env.REDIS_DB) || 0,
+        base: 'nitro:cache:'
       }
     },
     devStorage: {
@@ -52,7 +63,8 @@ export default defineNuxtConfig({
         host: process.env.REDIS_HOST || 'localhost',
         port: Number(process.env.REDIS_PORT) || 6379,
         password: process.env.REDIS_PASSWORD || '',
-        db: Number(process.env.REDIS_DB) || 0
+        db: Number(process.env.REDIS_DB) || 0,
+        base: 'nitro:cache:'
       }
     }
   },

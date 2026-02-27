@@ -23,3 +23,17 @@ body {
 ::-webkit-scrollbar-thumb {
   @apply bg-gray-300 rounded hover:bg-gray-400 transition-colors;
 }
+
+/* Code block styling */
+pre {
+  @apply rounded-lg p-4 my-4 overflow-x-auto shadow-md border border-gray-700/50;
+}
+
+pre code {
+  @apply bg-transparent p-0 text-sm leading-relaxed font-mono;
+}
+
+/* Inline code styling */
+:not(pre) > code {
+  @apply bg-gray-100 text-pink-600 px-1.5 py-0.5 rounded text-sm font-medium border border-gray-200;
+}
