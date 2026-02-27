@@ -98,6 +98,7 @@ const links = [
   { to: '/ssr-demo', text: 'SSR' },
   { to: '/plugins-demo', text: '插件' },
   { to: '/types-demo', text: '类型' },
+  { to: '/pinia-demo', text: 'Pinia' },
   { to: '/tsx-demo', text: 'TSX' },
   { to: '/styled-demo', text: 'Styled' },
 ]
