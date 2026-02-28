@@ -16,6 +16,7 @@
 - **单元测试**: 集成 Vitest + @nuxt/test-utils 进行单元测试和组件测试。
 - **调试配置**: 预配置 VS Code `launch.json`，支持客户端和服务端断点调试。
 - **SSR 支持**: 包含服务端渲染 API 和页面调试示例，支持 `useAsyncData` 数据获取。
+- **ISR 渲染**: 配置了增量静态再生 (ISR)，支持页面级缓存策略。
 - **功能演示**: 包含完整的商品列表、详情、购物车、收藏夹及用户中心功能。
 
 ## 📂 目录结构
@@ -76,6 +77,13 @@
 ### 7. 样式方案
 - **Tailwind CSS**: 主要样式工具。
 - **Styled Components**: 演示 CSS-in-JS 方案 (`pages/styled-demo.vue`)。
+
+### 8. 渲染策略 (Rendering)
+本项目混合使用了多种渲染模式以优化性能：
+- **SSR (服务端渲染)**: 默认模式，适用于大多数动态页面。
+- **ISR (增量静态再生)**: 通过 `routeRules` 配置缓存策略。
+  - `/docs`: SWR (Stale-While-Revalidate)，非阻塞后台更新。
+  - `/products/**`: 缓存 1 小时 (3600秒)，适用于商品详情页。
 
 ## 🧪 单元测试
 
