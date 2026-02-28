@@ -92,17 +92,49 @@
         </div>
       </div>
     </div>
+    <div v-if="historyItems.length > 0" class="mt-16 border-t border-gray-200 pt-10">
+      <div class="flex items-center justify-between mb-6">
+        <h3 class="text-lg font-medium text-gray-900">最近浏览</h3>
+        <button 
+          @click="clearHistory" 
+          class="text-sm text-gray-500 hover:text-red-600 transition-colors"
+        >
+          清空历史
+        </button>
+      </div>
+      <div class="grid grid-cols-2 gap-x-4 gap-y-10 sm:gap-x-6 md:grid-cols-4 lg:gap-x-8">
+        <div v-for="item in historyItems" :key="item.id" class="group relative">
+          <div class="w-full min-h-80 bg-gray-200 aspect-w-1 aspect-h-1 rounded-md overflow-hidden group-hover:opacity-75 lg:h-80 lg:aspect-none">
+            <img :src="item.image" :alt="item.title" class="w-full h-full object-center object-contain lg:w-full lg:h-full p-4 bg-white" />
+          </div>
+          <div class="mt-4 flex justify-between">
+            <div>
+              <h3 class="text-sm text-gray-700">
+                <NuxtLink :to="`/products/${item.id}`">
+                  <span aria-hidden="true" class="absolute inset-0" />
+                  {{ item.title }}
+                </NuxtLink>
+              </h3>
+              <p class="mt-1 text-sm text-gray-500 capitalize">{{ item.category }}</p>
+            </div>
+            <p class="text-sm font-medium text-gray-900">${{ item.price }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { useProducts, type Product } from '~/composables/useProducts'
+import { useHistory } from '~/composables/useHistory'
 
 const route = useRoute()
 const { getProductById } = useProducts()
 const toast = useToast()
 const { addToCart } = useCart()
 const { toggleWishlist, isInWishlist } = useWishlist()
+const { historyItems, addToHistory, fetchHistory, clearHistory } = useHistory()
 
 const id = parseInt(route.params.id as string)
 
@@ -115,6 +147,19 @@ const { data: product, pending } = await useAsyncData<Product | undefined>(
 )
 
 const error = computed(() => !pending.value && !product.value)
+
+onMounted(async () => {
+  await fetchHistory()
+  if (product.value) {
+    addToHistory(product.value)
+  }
+})
+
+watch(product, (newProduct) => {
+  if (newProduct) {
+    addToHistory(newProduct)
+  }
+})
 
 useSeoMeta({
   title: () => product.value?.title || '商品详情',
