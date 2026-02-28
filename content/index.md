@@ -16,6 +16,8 @@
 - **单元测试**: 集成 Vitest + @nuxt/test-utils 进行单元测试和组件测试。
 - **调试配置**: 预配置 VS Code `launch.json`，支持客户端和服务端断点调试。
 - **SSR 支持**: 包含服务端渲染 API 和页面调试示例，支持 `useAsyncData` 数据获取。
+- **ISR 渲染**: 配置了增量静态再生 (ISR)，支持页面级缓存策略。
+- **Redis 持久化**: 集成 Redis 实现购物车、收藏夹、主题设置及错误日志的数据持久化。
 - **功能演示**: 包含完整的商品列表、详情、购物车、收藏夹及用户中心功能。
 
 ## 📂 目录结构
@@ -76,6 +78,47 @@
 ### 7. 样式方案
 - **Tailwind CSS**: 主要样式工具。
 - **Styled Components**: 演示 CSS-in-JS 方案 (`pages/styled-demo.vue`)。
+
+### 8. 渲染策略 (Rendering)
+本项目混合使用了多种渲染模式以优化性能：
+- **SSR (服务端渲染)**: 默认模式，适用于大多数动态页面。
+- **ISR (增量静态再生)**: 通过 `routeRules` 配置缓存策略。
+  - `/docs`: SWR (Stale-While-Revalidate)，非阻塞后台更新。
+  - `/products/**`: 缓存 1 小时 (3600秒)，适用于商品详情页。
+
+### 9. 数据持久化 (Redis Integration)
+本项目使用 Redis 作为核心数据存储，实现了用户数据的跨端持久化与状态同步：
+
+- **购物车 (Cart)**:
+  - Key: `cart:{userId}`
+  - 机制: 用户登录后，购物车数据会自动同步到 Redis，实现多设备共享。
+- **收藏夹 (Wishlist)**:
+  - Key: `wishlist:{userId}`
+  - 机制: 持久化存储用户收藏的商品列表。
+- **主题设置 (Theme)**:
+  - Key: `theme:{userId}`
+  - 机制: 存储用户的个性化主题配置 (颜色、圆角等)，登录时自动恢复。
+- **Nitro 缓存**:
+  - Key: `nitro:cache:*`
+  - 机制: Nuxt 服务端渲染缓存与 API 响应缓存。
+
+> **配置说明**: Redis 连接信息需在 `.env` 中配置 (见下文 "错误日志" 章节)。
+
+### 10. 缓存管理 (Cache Management)
+由于启用了 ISR 和 Redis 缓存，当文档 (`README.md`) 或商品数据更新后，可能需要手动清除缓存以立即生效。
+
+本项目提供了一个管理 API 来清除指定路径的缓存：
+
+**请求示例**:
+
+```bash
+curl -X POST http://localhost:4000/api/cache/clear \
+  -H "Content-Type: application/json" \
+  -d '{"path": "docs"}'
+```
+
+- **path**: 需要清除缓存的路径关键词 (默认: "docs")。
+- **响应**: 返回被清除的 Key 列表。
 
 ## 🧪 单元测试
 
@@ -201,3 +244,18 @@ npm run deploy
 3. 构建项目
 4. 生成 `release.tar.gz` 部署包
 5. (可选) 本地预览运行
+
+### CI/CD 自动化部署
+
+本项目包含 GitHub Actions 工作流示例 (`.github/workflows/deploy.yml`)。要启用自动化部署，请在 GitHub 仓库的 **Settings > Secrets and variables > Actions** 中配置以下 Secrets：
+
+| Secret 名称 | 说明 | 示例 |
+| :--- | :--- | :--- |
+| `APP_URL` | **(必需)** 生产环境的基础 URL，用于构建后自动清除缓存 | `https://your-domain.com` |
+| `HOST` | (可选) 目标服务器 IP 地址 | `1.2.3.4` |
+| `USERNAME` | (可选) SSH 登录用户名 | `root` |
+| `SSH_KEY` | (可选) SSH 私钥内容 | `-----BEGIN OPENSSH PRIVATE KEY...` |
+| `APP_DIR` | (可选) 服务器上的部署目录 | `/var/www/nuxt3-demo` |
+
+配置完成后，每次推送到 `main` 分支时，将自动触发构建、部署（需取消注释相关步骤）及缓存清除流程。
+

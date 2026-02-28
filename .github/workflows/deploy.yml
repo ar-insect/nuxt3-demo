@@ -1,0 +1,47 @@
+name: Deploy and Clear Cache
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Build Project
+        run: npm run build
+
+      # Example Deployment Step (SSH to server)
+      # You need to configure secrets: HOST, USERNAME, SSH_KEY, APP_DIR
+      # - name: Deploy to Server
+      #   uses: appleboy/ssh-action@master
+      #   with:
+      #     host: ${{ secrets.HOST }}
+      #     username: ${{ secrets.USERNAME }}
+      #     key: ${{ secrets.SSH_KEY }}
+      #     script: |
+      #       cd ${{ secrets.APP_DIR }}
+      #       git pull
+      #       npm install
+      #       npm run build
+      #       pm2 restart ecosystem.config.js
+
+      # Post-deployment Cache Clearing
+      # Ensure the server is up and running before clearing cache
+      - name: Clear Cache
+        env:
+          APP_URL: ${{ secrets.APP_URL }} # e.g. https://your-domain.com
+        run: |
+          echo "Waiting for server to be ready..."
+          sleep 30 # Wait 30s for service restart (pm2 restart)
+          npm run cache:clear

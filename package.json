@@ -9,7 +9,8 @@
     "preview": "nuxt preview",
     "test": "vitest",
     "postinstall": "nuxt prepare",
-    "deploy": "bash scripts/deploy.sh"
+    "deploy": "bash scripts/deploy.sh",
+    "cache:clear": "bash scripts/clear-cache.sh"
   },
   "dependencies": {
     "@heroicons/vue": "^2.2.0",

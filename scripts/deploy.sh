@@ -61,4 +61,6 @@ else
     echo -e "${YELLOW}Example deployment commands:${NC}"
     echo "  scp ${ARCHIVE_NAME} user@your-server:/path/to/app/"
     echo "  ssh user@your-server 'cd /path/to/app && tar -xzf ${ARCHIVE_NAME} && pm2 restart ecosystem.config.js'"
+    echo "  # After deployment, verify the server is up and clear cache:"
+    echo "  APP_URL=http://your-server-domain npm run cache:clear"
 fi
