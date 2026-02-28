@@ -12,21 +12,23 @@
 <script setup lang="ts">
 import { ThemeProvider } from 'vue3-styled-components'
 import { useThemeStore } from '~/stores/theme'
-import { useUserStore } from '~/stores/user'
 
 const themeStore = useThemeStore()
-const userStore = useUserStore()
+const { user } = useAuth()
 
 // 初始化主题
-onMounted(async () => {
-  themeStore.applyTheme()
-  if (userStore.currentUser?.id) {
-    await themeStore.fetchTheme(userStore.currentUser.id.toString())
+const initTheme = async () => {
+  if (user.value?.id) {
+    await themeStore.fetchTheme(user.value.id.toString())
   }
-})
+  themeStore.applyTheme()
+}
+
+// 在服务端和客户端都执行
+await initTheme()
 
 // 监听用户登录状态变化，重新加载主题
-watch(() => userStore.currentUser?.id, async (newId) => {
+watch(() => user.value?.id, async (newId) => {
   if (newId) {
     await themeStore.fetchTheme(newId.toString())
   } else {

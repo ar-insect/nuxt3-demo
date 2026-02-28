@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import { useThemeStore } from '~/stores/theme'
-import { useUserStore } from '~/stores/user'
 
 const isOpen = ref(false)
 const themeStore = useThemeStore()
-const userStore = useUserStore()
+const { user } = useAuth()
 
 // 预设颜色
 const colors = [
@@ -28,11 +27,11 @@ const toggle = () => {
 }
 
 const updateColor = (color: string) => {
-  themeStore.updateTheme({ primaryColor: color }, userStore.currentUser?.id?.toString())
+  themeStore.updateTheme({ primaryColor: color }, user.value?.id?.toString())
 }
 
 const updateRadius = (radius: string) => {
-  themeStore.updateTheme({ borderRadius: radius }, userStore.currentUser?.id?.toString())
+  themeStore.updateTheme({ borderRadius: radius }, user.value?.id?.toString())
 }
 
 const reset = () => {

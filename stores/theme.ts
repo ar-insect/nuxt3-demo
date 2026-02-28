@@ -29,6 +29,19 @@ export const useThemeStore = defineStore('theme', {
         root.style.setProperty('--bg-color', this.theme.backgroundColor)
         root.style.setProperty('--text-color', this.theme.textColor)
         root.style.setProperty('--border-radius', this.theme.borderRadius)
+      } else {
+        useHead({
+          style: [
+            {
+              innerHTML: `:root {
+                --primary-color: ${this.theme.primaryColor};
+                --bg-color: ${this.theme.backgroundColor};
+                --text-color: ${this.theme.textColor};
+                --border-radius: ${this.theme.borderRadius};
+              }`
+            }
+          ]
+        })
       }
     },
 
@@ -38,12 +51,12 @@ export const useThemeStore = defineStore('theme', {
 
       this.isLoading = true
       try {
-        const { data } = await useFetch('/api/theme', {
+        const data = await $fetch<ThemeConfig>('/api/theme', {
           params: { userId }
         })
         
-        if (data.value) {
-          this.theme = { ...DEFAULT_THEME, ...data.value }
+        if (data) {
+          this.theme = { ...DEFAULT_THEME, ...data }
           this.applyTheme()
         }
       } catch (e) {
