@@ -103,8 +103,13 @@
 const { cartItems, removeFromCart, updateQuantity, cartTotal, clearCart } = useCart()
 const toast = useToast()
 
+useSeoMeta({
+  title: '购物车',
+  description: '查看您的购物车商品并结算。'
+})
+
 const handleCheckout = () => {
-  toast.success('Order placed successfully! (Demo)')
+  toast.success('订单提交成功！(演示)')
   setTimeout(() => {
     clearCart()
     navigateTo('/products')

@@ -4,8 +4,9 @@ const { data: page } = await useAsyncData('docs', () => {
   return queryCollection('content').path('/').first()
 })
 
-useHead({
+useSeoMeta({
   title: '项目文档',
+  description: 'Nuxt3 演示项目详细文档，包含安装、配置、组件使用等说明。'
 })
 
 const scrollToHeading = (id: string) => {

@@ -171,6 +171,33 @@ const activeQuery = computed<string>(() => {
   return typeof v === 'string' ? v.trim() : ''
 })
 
+const categoryLabels: Record<string, string> = {
+  "men's clothing": '男装',
+  'jewelery': '珠宝配饰',
+  'electronics': '电子产品',
+  "women's clothing": '女装'
+}
+
+useSeoMeta({
+  title: computed(() => {
+    if (activeCategory.value && categoryLabels[activeCategory.value]) {
+      return `${categoryLabels[activeCategory.value]} - 商品列表`
+    }
+    if (activeQuery.value) {
+      return `搜索：${activeQuery.value} - 商品列表`
+    }
+    return '商品列表'
+  }),
+  description: computed(() => {
+    if (activeCategory.value && categoryLabels[activeCategory.value]) {
+      return `浏览我们的${categoryLabels[activeCategory.value]}系列商品。`
+    }
+    return '浏览我们精选的各类优质商品。'
+  }),
+  ogTitle: computed(() => activeCategory.value ? `${categoryLabels[activeCategory.value]} - Nuxt3 演示` : '商品列表 - Nuxt3 演示'),
+  ogDescription: '浏览我们精选的各类优质商品。'
+})
+
 // Use watch to react to route changes and refresh data
 const { data, pending, refresh } = await useAsyncData(
   'products',
@@ -194,13 +221,6 @@ const categories = [
   "men's clothing",
   "women's clothing"
 ]
-
-const categoryLabels: Record<string, string> = {
-  "men's clothing": '男装',
-  'jewelery': '珠宝配饰',
-  'electronics': '电子产品',
-  "women's clothing": '女装'
-}
 
 const searchText = ref<string>(activeQuery.value)
 

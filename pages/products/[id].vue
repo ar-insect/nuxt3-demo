@@ -115,6 +115,16 @@ const { data: product, pending } = await useAsyncData<Product | undefined>(
 )
 
 const error = computed(() => !pending.value && !product.value)
+
+useSeoMeta({
+  title: () => product.value?.title || '商品详情',
+  description: () => product.value?.description?.substring(0, 160) || '查看商品详情',
+  ogTitle: () => product.value?.title || '商品详情 - Nuxt3 演示',
+  ogDescription: () => product.value?.description?.substring(0, 160) || '查看商品详情',
+  ogImage: () => product.value?.image || '/og-image.png',
+  twitterCard: 'summary_large_image',
+})
+
 const addingToCart = ref(false)
 
 const handleAddToCart = () => {

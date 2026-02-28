@@ -125,6 +125,12 @@ definePageMeta({
 })
 
 const { user, logout } = useAuth()
+
+useSeoMeta({
+  title: '个人中心',
+  description: '管理您的个人资料和账户设置。'
+})
+
 const uploading = ref(false)
 const saving = ref(false)
 const showCropper = ref(false)

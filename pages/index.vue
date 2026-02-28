@@ -255,7 +255,13 @@ import { useProducts, type Product } from '~/composables/useProducts'
 import StyledTsxButton from '~/components/StyledTsxButton'
 import StyledButton from '~/components/StyledButton'
 
-useHead({ title: '首页' })
+useSeoMeta({
+  title: '首页',
+  description: 'Nuxt3 演示项目首页，展示商品列表、购物车和收藏夹功能。',
+  ogTitle: 'Nuxt3 演示 - 首页',
+  ogDescription: '发现你喜欢的好物。Nuxt 3 电商风格首页示例：商品推荐、分类入口、加入购物车与收藏。',
+  ogImage: '/og-image.png'
+})
 
 const route = useRoute()
 const router = useRouter()

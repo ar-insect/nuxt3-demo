@@ -72,6 +72,11 @@ const password = ref('')
 const loading = ref(false)
 const { login } = useAuth()
 
+useSeoMeta({
+  title: '用户登录',
+  description: '登录您的 Nuxt3 演示账户。'
+})
+
 const handleLogin = async () => {
   if (!username.value || !password.value) return
   

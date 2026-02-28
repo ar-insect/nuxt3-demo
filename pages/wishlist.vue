@@ -54,6 +54,11 @@ const { wishlistItems, removeFromWishlist } = useWishlist()
 const { addToCart } = useCart()
 const toast = useToast()
 
+useSeoMeta({
+  title: '我的收藏',
+  description: '查看您收藏的商品。'
+})
+
 const handleAddToCart = (product: Product) => {
   addToCart(product)
   toast.success('已加入购物车！')
