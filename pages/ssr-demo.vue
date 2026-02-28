@@ -54,7 +54,7 @@ const currentId = ref('demo-1')
 // useFetch 在服务端渲染期间会直接调用 API 函数（模拟请求），
 // 在客户端导航时会发起真实的 HTTP 请求。
 // 在这里设置断点，可以观察 setup 函数在服务端和客户端的执行情况。
-console.log('[SSR Demo] Page setup executing...')
+console.log('[SSR 演示] 页面 setup 执行中...')
 
 const { data, pending, error, refresh } = await useFetch<any>('/api/ssr-test', {
   query: { id: currentId }

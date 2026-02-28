@@ -58,7 +58,7 @@
       <div class="hidden md:flex items-center gap-4">
         <!-- Cart & Wishlist -->
         <div class="flex items-center gap-2 border-r border-gray-200 pr-4 mr-4">
-          <NuxtLink to="/wishlist" class="relative p-2 text-gray-400 hover:text-red-500 transition-colors" title="Wishlist">
+          <NuxtLink to="/wishlist" class="relative p-2 text-gray-400 hover:text-red-500 transition-colors" title="收藏夹">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
             </svg>
@@ -68,7 +68,7 @@
               </span>
             </ClientOnly>
           </NuxtLink>
-          <NuxtLink to="/cart" class="relative p-2 text-gray-400 hover:text-[var(--primary-color)] transition-colors" title="Cart">
+          <NuxtLink to="/cart" class="relative p-2 text-gray-400 hover:text-[var(--primary-color)] transition-colors" title="购物车">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
             </svg>
@@ -83,7 +83,7 @@
         <!-- User Actions -->
         <div v-if="user" class="flex items-center gap-3">
           <NuxtLink to="/profile" class="flex items-center gap-2 text-sm font-medium text-gray-700 hover:text-[var(--primary-color)] transition-colors">
-            <img v-if="user.avatar" :src="user.avatar" class="w-8 h-8 rounded-full border border-gray-200" alt="User" />
+            <img v-if="user.avatar" :src="user.avatar" class="w-8 h-8 rounded-full border border-gray-200" alt="用户" />
             <span>{{ user.name }}</span>
           </NuxtLink>
           <button 
@@ -91,7 +91,7 @@
             class="px-4 py-2 text-sm font-medium text-red-600 bg-red-50 hover:bg-red-100 transition-colors"
             :style="{ borderRadius: 'var(--border-radius)' }"
           >
-            Logout
+            退出登录
           </button>
         </div>
         <NuxtLink 
@@ -100,7 +100,7 @@
           class="px-4 py-2 text-sm font-medium text-white bg-[var(--primary-color)] hover:opacity-90 shadow-lg shadow-[var(--primary-color)]/30 transition-all hover:-translate-y-0.5"
           :style="{ borderRadius: 'var(--border-radius)' }"
         >
-          Login
+          登录
         </NuxtLink>
       </div>
 

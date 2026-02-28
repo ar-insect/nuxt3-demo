@@ -1,18 +1,18 @@
 <template>
   <div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
     <div class="border-b border-gray-200 pb-5 mb-8">
-      <h1 class="text-3xl font-bold leading-tight text-gray-900">My Wishlist</h1>
+      <h1 class="text-3xl font-bold leading-tight text-gray-900">我的收藏</h1>
     </div>
 
     <div v-if="wishlistItems.length === 0" class="text-center py-12 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
       <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
       </svg>
-      <h3 class="mt-2 text-sm font-medium text-gray-900">Your wishlist is empty</h3>
-      <p class="mt-1 text-sm text-gray-500">Save items you love to your wishlist.</p>
+      <h3 class="mt-2 text-sm font-medium text-gray-900">您的收藏夹是空的</h3>
+      <p class="mt-1 text-sm text-gray-500">将您喜欢的商品保存到收藏夹。</p>
       <div class="mt-6">
         <NuxtLink to="/products">
-          <BaseButton variant="primary">Browse Products</BaseButton>
+          <BaseButton variant="primary">浏览商品</BaseButton>
         </NuxtLink>
       </div>
     </div>
@@ -39,7 +39,7 @@
           </h3>
           <div class="mt-4 flex items-center justify-between">
             <p class="text-lg font-bold text-gray-900">${{ product.price }}</p>
-            <BaseButton size="sm" variant="secondary" @click="handleAddToCart(product)">Add to Cart</BaseButton>
+            <BaseButton size="sm" variant="secondary" @click="handleAddToCart(product)">加入购物车</BaseButton>
           </div>
         </div>
       </BaseCard>
@@ -56,6 +56,6 @@ const toast = useToast()
 
 const handleAddToCart = (product: Product) => {
   addToCart(product)
-  toast.success('Added to cart!')
+  toast.success('已加入购物车！')
 }
 </script>

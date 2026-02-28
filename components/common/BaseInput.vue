@@ -30,7 +30,7 @@
           @click="clearInput"
           class="text-gray-400 hover:text-gray-500 focus:outline-none mr-1"
         >
-          <span class="sr-only">Clear</span>
+          <span class="sr-only">清除</span>
           <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
           </svg>

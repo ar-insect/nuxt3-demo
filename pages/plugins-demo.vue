@@ -6,7 +6,7 @@
       <h2>1. 模板中使用插件</h2>
       <p>直接在模板中使用 <code>$myHelper</code>:</p>
       <div class="result">
-        {{ $myHelper('Hello from Template') }}
+        {{ $myHelper('来自模板的问候') }}
       </div>
     </div>
 
@@ -40,10 +40,10 @@ const { $myHelper } = useNuxtApp()
 const scriptResult = ref('')
 
 // 初始化调用
-scriptResult.value = $myHelper('Hello from Script Setup')
+scriptResult.value = $myHelper('来自 Script Setup 的问候')
 
 const triggerPlugin = () => {
-  scriptResult.value = $myHelper('Button Clicked')
+  scriptResult.value = $myHelper('按钮被点击')
 }
 </script>
 

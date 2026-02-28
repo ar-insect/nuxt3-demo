@@ -2,9 +2,9 @@
 <template>
   <div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
     <div class="border-b border-gray-200 pb-5 mb-8">
-      <h1 class="text-3xl font-bold leading-tight text-gray-900">Products</h1>
+      <h1 class="text-3xl font-bold leading-tight text-gray-900">商品列表</h1>
       <p class="mt-2 text-lg text-gray-500">
-        Browse our latest collection of premium products.
+        浏览我们要选的优质商品。
       </p>
     </div>
 
@@ -13,7 +13,7 @@
         <div class="flex-1">
           <BaseInput
             v-model="searchText"
-            placeholder="Search products..."
+            placeholder="搜索商品..."
             clearable
             @clear="searchText = ''"
           >
@@ -29,7 +29,7 @@
             :variant="!activeCategory ? 'primary' : 'outline'"
             @click="setCategory()"
           >
-            All
+            全部
           </BaseButton>
           <BaseButton
             v-for="cat in categories"
@@ -38,7 +38,7 @@
             @click="setCategory(cat)"
             class="whitespace-nowrap capitalize"
           >
-            {{ cat }}
+            {{ categoryLabels[cat] || cat }}
           </BaseButton>
           <BaseButton
             v-if="activeCategory || activeQuery"
@@ -46,7 +46,7 @@
             class="text-red-600 hover:text-red-700 hover:bg-red-50"
             @click="clearFilters"
           >
-            Clear
+            清除
           </BaseButton>
         </div>
       </div>
@@ -89,7 +89,7 @@
                 class="flex-1 inline-flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-[var(--primary-color)] hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors"
                 :style="{ borderRadius: 'var(--border-radius)' }"
               >
-                View Details
+                查看详情
               </NuxtLink>
             </div>
           </div>
@@ -103,9 +103,9 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
           </svg>
         </div>
-        <h3 class="text-lg font-medium text-gray-900 mb-1">No products found</h3>
+        <h3 class="text-lg font-medium text-gray-900 mb-1">未找到商品</h3>
         <p class="text-gray-500">
-          Try adjusting your search or filter to find what you're looking for.
+          尝试调整搜索或筛选条件以找到您想要的商品。
         </p>
         <BaseButton
           v-if="activeQuery || activeCategory"
@@ -113,7 +113,7 @@
           class="mt-4"
           @click="clearFilters"
         >
-          Clear all filters
+          清除所有筛选
         </BaseButton>
       </div>
 
@@ -124,7 +124,7 @@
           :to="page > 1 ? { path: '/products', query: { ...route.query, page: page - 1 } } : undefined"
           :disabled="page <= 1"
         >
-          Previous
+          上一页
         </BaseButton>
         <div class="flex items-center gap-1">
           <NuxtLink
@@ -145,7 +145,7 @@
           :to="page < totalPages ? { path: '/products', query: { ...route.query, page: page + 1 } } : undefined"
           :disabled="page >= totalPages"
         >
-          Next
+          下一页
         </BaseButton>
       </div>
   </div>
@@ -194,6 +194,13 @@ const categories = [
   "men's clothing",
   "women's clothing"
 ]
+
+const categoryLabels: Record<string, string> = {
+  "men's clothing": '男装',
+  'jewelery': '珠宝配饰',
+  'electronics': '电子产品',
+  "women's clothing": '女装'
+}
 
 const searchText = ref<string>(activeQuery.value)
 

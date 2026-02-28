@@ -7,7 +7,7 @@
     
     <footer class="bg-white border-t border-gray-100 py-6 mt-12">
       <div class="container mx-auto px-4 text-center text-gray-500 text-sm">
-        <p>&copy; {{ new Date().getFullYear() }} Nuxt3 Demo Project. Built with Nuxt 3 & Tailwind CSS.</p>
+        <p>&copy; {{ new Date().getFullYear() }} Nuxt3 演示项目。基于 Nuxt 3 & Tailwind CSS 构建。</p>
       </div>
     </footer>
 

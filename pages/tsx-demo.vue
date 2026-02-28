@@ -1,19 +1,19 @@
 <template>
   <div class="max-w-4xl mx-auto space-y-8">
     <div class="border-b border-gray-200 pb-5">
-      <h1 class="text-3xl font-bold leading-tight text-gray-900">TSX Support Demo</h1>
+      <h1 class="text-3xl font-bold leading-tight text-gray-900">TSX 支持演示</h1>
       <p class="mt-2 text-lg text-gray-500">
-        Using JSX/TSX syntax in Vue 3 with Nuxt 3.
+        在 Nuxt 3 中使用 Vue 3 的 JSX/TSX 语法。
       </p>
     </div>
 
     <!-- Live Demo Card -->
     <div class="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
       <div class="border-b border-gray-100 bg-gray-50 px-6 py-4">
-        <h2 class="text-lg font-medium text-gray-900">Live Component</h2>
+        <h2 class="text-lg font-medium text-gray-900">实时组件</h2>
       </div>
       <div class="p-8 flex items-center justify-center bg-gray-50/50">
-        <TsxHello message="Hello from TSX!" />
+        <TsxHello message="来自 TSX 的问候！" />
       </div>
     </div>
 
@@ -55,11 +55,11 @@ export default defineComponent({
           </svg>
         </div>
         <div class="ml-3">
-          <h3 class="text-sm font-medium text-blue-800">Why use TSX?</h3>
+          <h3 class="text-sm font-medium text-blue-800">为什么使用 TSX？</h3>
           <div class="mt-2 text-sm text-blue-700">
             <p>
-              TSX is great for complex render logic where templates become unwieldy. 
-              It provides full TypeScript support in your render functions and allows you to use the full power of JavaScript.
+              TSX 非常适合模板变得难以处理的复杂渲染逻辑。
+              它在渲染函数中提供完整的 TypeScript 支持，并允许您使用 JavaScript 的全部功能。
             </p>
           </div>
         </div>

@@ -89,7 +89,7 @@ const triggerManualError = () => {
   try {
     throw new Error('这是一个被捕获并手动记录的错误')
   } catch (e) {
-    $logError(e, 'User Triggered Manual Error')
+    $logError(e, '用户触发的手动错误')
   }
 }
 

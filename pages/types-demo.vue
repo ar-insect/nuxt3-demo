@@ -43,7 +43,7 @@ const userData: IUser = {
 
 const responseData: ApiResponse<IUser> = {
   code: 200,
-  message: 'Success',
+  message: '成功',
   data: userData,
   timestamp: Date.now()
 }

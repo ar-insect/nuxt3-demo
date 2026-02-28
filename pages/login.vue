@@ -2,17 +2,17 @@
   <div>
     <div>
       <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
-        Sign in to your account
+        登录您的账户
       </h2>
       <p class="mt-2 text-center text-sm text-gray-600">
-        Or use <span class="font-medium text-indigo-600 hover:text-indigo-500">admin / 123456</span>
+        或者使用 <span class="font-medium text-indigo-600 hover:text-indigo-500">admin / 123456</span>
       </p>
     </div>
     <form class="mt-8 space-y-6" @submit.prevent="handleLogin">
       <input type="hidden" name="remember" value="true" />
       <div class="rounded-md shadow-sm -space-y-px">
         <div>
-          <label for="username" class="sr-only">Username</label>
+          <label for="username" class="sr-only">用户名</label>
           <input
             id="username"
             name="username"
@@ -20,11 +20,11 @@
             required
             v-model="username"
             class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-            placeholder="Username"
+            placeholder="用户名"
           />
         </div>
         <div>
-          <label for="password" class="sr-only">Password</label>
+          <label for="password" class="sr-only">密码</label>
           <input
             id="password"
             name="password"
@@ -32,7 +32,7 @@
             required
             v-model="password"
             class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-            placeholder="Password"
+            placeholder="密码"
           />
         </div>
       </div>
@@ -59,7 +59,7 @@
               />
             </svg>
           </span>
-          {{ loading ? 'Signing in...' : 'Sign in' }}
+          {{ loading ? '登录中...' : '登录' }}
         </button>
       </div>
     </form>

@@ -32,7 +32,7 @@
         
         <div v-if="userStore.isLoggedIn" class="user-profile">
           <div class="avatar">
-            <img :src="userStore.currentUser?.avatar" alt="Avatar" />
+            <img :src="userStore.currentUser?.avatar" alt="头像" />
           </div>
           <div class="info">
             <h3>欢迎, {{ userStore.userName }}</h3>

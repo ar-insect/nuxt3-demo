@@ -5,17 +5,17 @@
       <div class="bg-indigo-600 px-4 py-5 sm:px-6 flex justify-between items-center">
         <div>
           <h3 class="text-lg leading-6 font-medium text-white">
-            Personal Center
+            个人中心
           </h3>
           <p class="mt-1 max-w-2xl text-sm text-indigo-100">
-            User details and profile information.
+            用户详情及个人资料。
           </p>
         </div>
         <button
           @click="logout"
           class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-indigo-600 bg-white hover:bg-indigo-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
         >
-          Sign out
+          退出登录
         </button>
       </div>
 
@@ -25,7 +25,7 @@
           <!-- Avatar Section -->
           <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
             <dt class="text-sm font-medium text-gray-500 self-center">
-              Avatar
+              头像
             </dt>
             <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 flex items-center space-x-4">
               <div class="relative group">
@@ -43,10 +43,10 @@
               </div>
               <div>
                 <label for="avatar-upload" class="cursor-pointer bg-white py-2 px-3 border border-gray-300 rounded-md shadow-sm text-sm leading-4 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                  Change
+                  更换
                 </label>
                 <input id="avatar-upload" type="file" class="hidden" accept="image/*" @change="handleFileUpload" :disabled="uploading" />
-                <p class="mt-1 text-xs text-gray-500">JPG, GIF or PNG.</p>
+                <p class="mt-1 text-xs text-gray-500">支持 JPG, GIF 或 PNG 格式。</p>
               </div>
             </dd>
           </div>
@@ -54,7 +54,7 @@
           <!-- Name Section -->
           <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
             <dt class="text-sm font-medium text-gray-500 self-center">
-              Full Name
+              姓名
             </dt>
             <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
               <input
@@ -68,7 +68,7 @@
           <!-- Read-only Fields -->
           <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
             <dt class="text-sm font-medium text-gray-500">
-              Username
+              用户名
             </dt>
             <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
               {{ user?.username }}
@@ -76,7 +76,7 @@
           </div>
           <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
             <dt class="text-sm font-medium text-gray-500">
-              Role
+              角色
             </dt>
             <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
               <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 capitalize">
@@ -86,7 +86,7 @@
           </div>
           <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
             <dt class="text-sm font-medium text-gray-500">
-              User ID
+              用户 ID
             </dt>
             <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
               {{ user?.id }}
@@ -101,7 +101,7 @@
             :disabled="saving"
             class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
           >
-            {{ saving ? 'Saving...' : 'Save Changes' }}
+            {{ saving ? '保存中...' : '保存修改' }}
           </button>
         </div>
       </form>
@@ -150,7 +150,7 @@ const handleFileUpload = (event: Event) => {
   const file = input.files[0]
   // Verify file type
   if (!file.type.startsWith('image/')) {
-    alert('Please select an image file')
+    alert('请选择图片文件')
     return
   }
 
@@ -179,7 +179,7 @@ const handleCrop = async (blob: Blob) => {
     })
     form.avatar = response.data.url
   } catch (error) {
-    alert('Failed to upload avatar')
+    alert('头像上传失败')
     console.error(error)
   } finally {
     uploading.value = false
@@ -203,9 +203,9 @@ const saveProfile = async () => {
       user.value.avatar = response.data.avatar
     }
     
-    alert('Profile updated successfully')
+    alert('资料更新成功')
   } catch (error) {
-    alert('Failed to update profile')
+    alert('资料更新失败')
     console.error(error)
   } finally {
     saving.value = false

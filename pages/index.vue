@@ -139,7 +139,7 @@
         </NuxtLink>
       </div>
 
-      <BaseLoading :loading="pending" text="Loading recommendations..." />
+      <BaseLoading :loading="pending" text="正在加载推荐商品..." />
 
       <div v-if="!pending" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         <div
@@ -295,7 +295,9 @@ onMounted(() => {
 
 const categoryMeta: Record<string, { label: string; description: string; icon: any }> = {
   "men's clothing": { label: '男装', description: '日常穿搭、外套与基础款', icon: ShoppingBagIcon },
-  'jewelery': { label: '珠宝配饰', description: '戒指、耳饰、手链等', icon: SparklesIcon }
+  'jewelery': { label: '珠宝配饰', description: '戒指、耳饰、手链等', icon: SparklesIcon },
+  "electronics": { label: '电子产品', description: '数码产品、手机与配件', icon: TagIcon },
+  "women's clothing": { label: '女装', description: '时尚潮流、裙装与上衣', icon: ShoppingBagIcon }
 }
 
 const categoryCards = computed(() => {

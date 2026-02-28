@@ -4,14 +4,14 @@ export default defineEventHandler(async (event) => {
   const query = getQuery(event)
   const id = query.id || 'default-id'
 
-  console.log(`[SSR API] Processing request for ID: ${id}`)
+  console.log(`[SSR API] 正在处理 ID 请求: ${id}`)
   
   // 模拟一些业务逻辑
-  const processedData = `Server processed ${id} at ${new Date().toISOString()}`
+  const processedData = `服务端已处理 ${id} 于 ${new Date().toISOString()}`
   
   return {
     id,
-    message: 'Hello from Server Side!',
+    message: '来自服务端的问候！',
     timestamp: Date.now(),
     serverTime: new Date().toLocaleString(),
     data: processedData,
