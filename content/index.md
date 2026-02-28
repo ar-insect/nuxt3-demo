@@ -89,22 +89,57 @@
 ### 9. 数据持久化 (Redis Integration)
 本项目使用 Redis 作为核心数据存储，实现了用户数据的跨端持久化与状态同步：
 
+- **用户资料 (User Profile)**:
+  - Key: `user:profile:{userId}`
+  - 机制: 存储用户自定义头像和昵称，登录时自动合并至用户状态。
 - **购物车 (Cart)**:
-  - Key: `cart:{userId}`
-  - 机制: 用户登录后，购物车数据会自动同步到 Redis，实现多设备共享。
+  - Key: `cart:{sessionId}`
+  - 机制: 基于会话 ID (Cookie) 存储临时购物车数据，有效期随 Session 保持。
 - **收藏夹 (Wishlist)**:
-  - Key: `wishlist:{userId}`
-  - 机制: 持久化存储用户收藏的商品列表。
+  - Key: `wishlist:{sessionId}`
+  - 机制: 基于会话 ID (Cookie) 存储用户收藏的商品列表。
 - **主题设置 (Theme)**:
-  - Key: `theme:{userId}`
+  - Key: `user:theme:{userId}`
   - 机制: 存储用户的个性化主题配置 (颜色、圆角等)，登录时自动恢复。
 - **Nitro 缓存**:
   - Key: `nitro:cache:*`
   - 机制: Nuxt 服务端渲染缓存与 API 响应缓存。
+- **错误日志 (Error Logs)**:
+  - Key: `app:logs` (List)
+  - 机制: 存储最近 1000 条应用错误日志。
 
-> **配置说明**: Redis 连接信息需在 `.env` 中配置 (见下文 "错误日志" 章节)。
+> **配置说明**: Redis 连接信息需在 `.env` 中配置。
 
-### 10. 缓存管理 (Cache Management)
+### 10. 部署 (Deployment)
+
+#### Docker 部署 (推荐)
+本项目支持使用 Docker Compose 一键启动应用和 Redis 服务。
+
+1.  **构建并启动**:
+    ```bash
+    docker-compose up -d --build
+    ```
+2.  **访问应用**:
+    打开浏览器访问 `http://localhost:3000`。
+3.  **停止服务**:
+    ```bash
+    docker-compose down
+    ```
+
+> **注意**: 默认配置下，应用数据（如上传的文件）会挂载到本地 `./public/uploads`，Redis 数据持久化在 Docker Volume 中。
+
+#### 传统部署
+1.  **构建**:
+    ```bash
+    npm run build
+    ```
+2.  **运行**:
+    ```bash
+    node .output/server/index.mjs
+    ```
+    *需确保环境变量中已配置 Redis 连接信息。*
+
+### 11. 缓存管理 (Cache Management)
 由于启用了 ISR 和 Redis 缓存，当文档 (`README.md`) 或商品数据更新后，可能需要手动清除缓存以立即生效。
 
 本项目提供了一个管理 API 来清除指定路径的缓存：

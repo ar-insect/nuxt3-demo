@@ -1,0 +1,12 @@
+node_modules
+.nuxt
+.output
+.git
+.gitignore
+.env
+dist
+coverage
+tests
+README.md
+Dockerfile
+docker-compose.yml
