@@ -70,9 +70,11 @@
                 <div class="flex items-center justify-between gap-4">
                   <div class="min-w-0">
                     <div class="text-sm font-semibold text-gray-900">你的购物车</div>
-                    <div class="mt-1 text-sm text-gray-600">
-                      已选 {{ cartCount }} 件商品，{{ wishlistItems.length }} 件收藏
-                    </div>
+                    <ClientOnly>
+                      <div class="mt-1 text-sm text-gray-600">
+                        已选 {{ cartCount }} 件商品，{{ wishlistItems.length }} 件收藏
+                      </div>
+                    </ClientOnly>
                   </div>
                   <div class="flex gap-2">
                     <NuxtLink to="/cart">
@@ -169,15 +171,17 @@
             <StyledButton :primary="true" class="!m-0 flex-1 !py-2 !text-sm font-medium shadow-sm hover:!shadow-md active:scale-95" @click="addToCartAndToast(p)">
               加入购物车
             </StyledButton>
-            <button
-              class="flex h-10 w-10 shrink-0 items-center justify-center border border-gray-200 bg-white text-gray-400 transition-all hover:border-red-200 hover:bg-red-50 hover:text-red-500 hover:scale-110 active:scale-90"
-              :style="{ borderRadius: 'var(--border-radius)' }"
-              @click="toggleWishlist(p)"
-              :aria-label="isInWishlist(p.id) ? '取消收藏' : '加入收藏'"
-              type="button"
-            >
-              <HeartIcon class="h-5 w-5" :class="{ 'fill-current text-red-500': isInWishlist(p.id) }" />
-            </button>
+            <ClientOnly>
+              <button
+                class="flex h-10 w-10 shrink-0 items-center justify-center border border-gray-200 bg-white text-gray-400 transition-all hover:border-red-200 hover:bg-red-50 hover:text-red-500 hover:scale-110 active:scale-90"
+                :style="{ borderRadius: 'var(--border-radius)' }"
+                @click="toggleWishlist(p)"
+                :aria-label="isInWishlist(p.id) ? '取消收藏' : '加入收藏'"
+                type="button"
+              >
+                <HeartIcon class="h-5 w-5" :class="{ 'fill-current text-red-500': isInWishlist(p.id) }" />
+              </button>
+            </ClientOnly>
           </div>
         </div>
       </div>

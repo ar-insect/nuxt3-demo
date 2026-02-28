@@ -8,133 +8,146 @@
       </p>
     </div>
 
-    <div class="mb-8 space-y-4 border border-gray-200 bg-white p-4" :style="{ borderRadius: 'var(--border-radius)' }">
-      <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+      <!-- Search and Filter -->
+      <div class="mb-8 flex flex-col sm:flex-row gap-4">
         <div class="flex-1">
-          <BaseInput v-model="searchText" placeholder="Search products..." @keyup.enter="applySearch" />
+          <BaseInput
+            v-model="searchText"
+            placeholder="Search products..."
+            clearable
+            @clear="searchText = ''"
+          >
+            <template #prefix>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </template>
+          </BaseInput>
         </div>
-        <div class="flex gap-2">
-          <BaseButton variant="outline" @click="applySearch">Search</BaseButton>
-          <BaseButton variant="secondary" @click="clearFilters">Clear</BaseButton>
+        <div class="flex gap-2 overflow-x-auto pb-2 sm:pb-0">
+          <BaseButton
+            :variant="!activeCategory ? 'primary' : 'outline'"
+            @click="setCategory()"
+          >
+            All
+          </BaseButton>
+          <BaseButton
+            v-for="cat in categories"
+            :key="cat"
+            :variant="activeCategory === cat ? 'primary' : 'outline'"
+            @click="setCategory(cat)"
+            class="whitespace-nowrap capitalize"
+          >
+            {{ cat }}
+          </BaseButton>
+          <BaseButton
+            v-if="activeCategory || activeQuery"
+            variant="ghost"
+            class="text-red-600 hover:text-red-700 hover:bg-red-50"
+            @click="clearFilters"
+          >
+            Clear
+          </BaseButton>
         </div>
       </div>
 
-      <div class="flex flex-wrap items-center gap-2">
-        <button
-          type="button"
-          class="px-3 py-1.5 text-sm border border-gray-200 bg-white hover:bg-gray-50"
+      <!-- Loading State -->
+      <div v-if="pending" class="flex justify-center py-12">
+        <div class="animate-spin rounded-full h-12 w-12 border-4 border-indigo-500 border-t-transparent"></div>
+      </div>
+
+      <!-- Product Grid -->
+      <div v-else-if="products.length > 0" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <BaseCard
+          v-for="product in products"
+          :key="product.id"
+          class="h-full flex flex-col hover:shadow-lg transition-shadow duration-300"
           :style="{ borderRadius: 'var(--border-radius)' }"
-          :class="!activeCategory ? 'bg-[var(--primary-color)]/10 border-[var(--primary-color)]/30 text-[var(--primary-color)] font-medium' : ''"
-          @click="setCategory(undefined)"
         >
-          全部
-        </button>
-        <button
-          v-for="c in categories"
-          :key="c"
-          type="button"
-          class="px-3 py-1.5 text-sm border border-gray-200 bg-white hover:bg-gray-50 capitalize"
-          :style="{ borderRadius: 'var(--border-radius)' }"
-          :class="activeCategory === c ? 'bg-[var(--primary-color)]/10 border-[var(--primary-color)]/30 text-[var(--primary-color)] font-medium' : ''"
-          @click="setCategory(c)"
-        >
-          {{ c }}
-        </button>
-      </div>
-
-      <div v-if="activeCategory || activeQuery" class="text-sm text-gray-600">
-        当前筛选：
-        <span v-if="activeCategory" class="font-medium text-gray-900">{{ activeCategory }}</span>
-        <span v-if="activeCategory && activeQuery"> · </span>
-        <span v-if="activeQuery" class="font-medium text-gray-900">“{{ activeQuery }}”</span>
-        <span class="ml-2 text-gray-400">({{ total }} 件)</span>
-      </div>
-    </div>
-
-    <BaseLoading :loading="pending" text="Loading products..." />
-
-    <div v-if="!pending && products.length === 0" class="py-16 text-center">
-      <div class="text-lg font-semibold text-gray-900">没有找到符合条件的商品</div>
-      <div class="mt-2 text-sm text-gray-600">试试清空筛选条件，或换个关键词</div>
-      <div class="mt-6 flex justify-center">
-        <BaseButton variant="secondary" @click="clearFilters">清空筛选</BaseButton>
-      </div>
-    </div>
-
-    <div v-else-if="!pending">
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        <BaseCard v-for="product in products" :key="product.id" class="flex flex-col h-full hover:shadow-lg transition-shadow duration-300">
-          <div class="aspect-w-1 aspect-h-1 w-full overflow-hidden bg-gray-200 mb-4 h-48 flex items-center justify-center p-4" :style="{ borderTopLeftRadius: 'var(--border-radius)', borderTopRightRadius: 'var(--border-radius)' }">
-            <img 
-              :src="product.image" 
-              :alt="product.title" 
-              class="h-full w-full object-contain object-center group-hover:opacity-75"
+          <div class="aspect-w-1 aspect-h-1 w-full overflow-hidden bg-gray-200 rounded-t-lg relative group">
+            <img
+              :src="product.image"
+              :alt="product.title"
+              class="w-full h-48 object-cover object-center group-hover:scale-105 transition-transform duration-300"
             />
-          </div>
-          
-          <div class="flex-1 flex flex-col justify-between">
-            <div>
-              <div class="flex justify-between items-start">
-                <h3 class="text-sm font-medium text-gray-900 line-clamp-2 min-h-[2.5rem]">
-                  <NuxtLink :to="`/products/${product.id}`">
-                    <span aria-hidden="true" class="absolute inset-0" />
-                    {{ product.title }}
-                  </NuxtLink>
-                </h3>
-              </div>
-              <p class="mt-1 text-sm text-gray-500 capitalize">{{ product.category }}</p>
-              <div class="mt-2 flex items-center">
-                <div class="flex items-center">
-                  <svg v-for="rating in [0, 1, 2, 3, 4]" :key="rating" :class="[product.rating.rate > rating ? 'text-yellow-400' : 'text-gray-200', 'h-4 w-4 flex-shrink-0']" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                  </svg>
-                </div>
-                <p class="ml-1 text-xs text-gray-500">{{ product.rating.count }} reviews</p>
-              </div>
+            <div class="absolute top-2 right-2 bg-white px-2 py-1 rounded-full text-xs font-bold text-gray-900 shadow-sm">
+              ${{ product.price }}
             </div>
-            
-            <div class="mt-4 flex items-center justify-between">
-              <p class="text-lg font-bold text-gray-900">${{ product.price }}</p>
-              <NuxtLink :to="`/products/${product.id}`">
-                <BaseButton size="sm" variant="secondary">View Details</BaseButton>
+          </div>
+          <div class="p-4 flex-1 flex flex-col">
+            <div class="flex justify-between items-start mb-2">
+              <h3 class="text-lg font-medium text-gray-900 line-clamp-1" :title="product.title">
+                <span v-html="highlightText(product.title, activeQuery)"></span>
+              </h3>
+            </div>
+            <p class="text-sm text-gray-500 mb-4 line-clamp-2 flex-1" :title="product.description">
+              <span v-html="highlightText(product.description, activeQuery)"></span>
+            </p>
+            <div class="mt-auto flex gap-2">
+              <NuxtLink
+                :to="`/products/${product.id}`"
+                class="flex-1 inline-flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-[var(--primary-color)] hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors"
+                :style="{ borderRadius: 'var(--border-radius)' }"
+              >
+                View Details
               </NuxtLink>
             </div>
           </div>
         </BaseCard>
       </div>
 
+      <!-- Empty State -->
+      <div v-else class="text-center py-12">
+        <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 mb-4">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+        </div>
+        <h3 class="text-lg font-medium text-gray-900 mb-1">No products found</h3>
+        <p class="text-gray-500">
+          Try adjusting your search or filter to find what you're looking for.
+        </p>
+        <BaseButton
+          v-if="activeQuery || activeCategory"
+          variant="outline"
+          class="mt-4"
+          @click="clearFilters"
+        >
+          Clear all filters
+        </BaseButton>
+      </div>
+
       <!-- Pagination -->
-      <div v-if="totalPages > 1" class="mt-8 flex justify-center gap-2">
+      <div v-if="totalPages > 1 && !pending && products.length > 0" class="mt-8 flex justify-center gap-2">
         <BaseButton
           variant="outline"
+          :to="page > 1 ? { path: '/products', query: { ...route.query, page: page - 1 } } : undefined"
           :disabled="page <= 1"
-          @click="changePage(page - 1)"
         >
           Previous
         </BaseButton>
         <div class="flex items-center gap-1">
-          <button
+          <NuxtLink
             v-for="p in totalPages"
             :key="p"
-            class="w-10 h-10 flex items-center justify-center border rounded-md text-sm font-medium transition-colors"
+            :to="{ path: '/products', query: { ...route.query, page: p } }"
+            class="w-10 h-10 flex items-center justify-center border text-sm font-medium transition-colors"
             :class="p === page 
               ? 'bg-[var(--primary-color)] text-white border-[var(--primary-color)]' 
               : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'"
             :style="{ borderRadius: 'var(--border-radius)' }"
-            @click="changePage(p)"
           >
             {{ p }}
-          </button>
+          </NuxtLink>
         </div>
         <BaseButton
           variant="outline"
+          :to="page < totalPages ? { path: '/products', query: { ...route.query, page: page + 1 } } : undefined"
           :disabled="page >= totalPages"
-          @click="changePage(page + 1)"
         >
           Next
         </BaseButton>
       </div>
-    </div>
   </div>
 </template>
 
@@ -161,24 +174,15 @@ const activeQuery = computed<string>(() => {
 // Use watch to react to route changes and refresh data
 const { data, pending, refresh } = await useAsyncData(
   'products',
-  () => getProducts(page.value, limit, activeCategory.value),
+  () => getProducts(page.value, limit, activeCategory.value, activeQuery.value),
   {
-    watch: [page, activeCategory], // Re-fetch when page or category changes
+    watch: [page, activeCategory, activeQuery], // Re-fetch when page, category or query changes
     default: () => ({ items: [], total: 0 })
   }
 )
 
 const products = computed(() => {
-  let items = data.value?.items || []
-  const q = activeQuery.value.toLowerCase()
-  
-  // Client-side search filtering (since mock API doesn't support search query)
-  if (q) {
-    items = items.filter(p => 
-      `${p.title} ${p.description} ${p.category}`.toLowerCase().includes(q)
-    )
-  }
-  return items
+  return data.value?.items || []
 })
 
 const total = computed(() => data.value?.total || 0)
@@ -209,34 +213,44 @@ const setCategory = (category?: string) => {
   })
 }
 
-const applySearch = () => {
-  const q = searchText.value.trim()
-  router.push({
-    path: '/products',
-    query: {
-      ...route.query,
-      q: q || undefined,
-      page: 1 // Reset to page 1 on search
-    }
-  })
-}
-
 const clearFilters = () => {
-  router.push({ path: '/products' })
-}
-
-const changePage = (newPage: number) => {
-  if (newPage < 1 || newPage > totalPages.value) return
-  
+  searchText.value = ''
   router.push({
     path: '/products',
     query: {
-      ...route.query,
-      page: newPage
+      page: 1
     }
   })
-  
-  // Scroll to top smoothly
-  window.scrollTo({ top: 0, behavior: 'smooth' })
+}
+
+// Debounce search
+let debounceTimer: NodeJS.Timeout | null = null
+const debouncedSearch = (newVal: string) => {
+  if (debounceTimer) clearTimeout(debounceTimer)
+  debounceTimer = setTimeout(() => {
+    // Only update if query actually changed to avoid redundant pushes
+    if (newVal !== activeQuery.value) {
+      router.push({
+        path: '/products',
+        query: {
+          ...route.query,
+          q: newVal || undefined,
+          page: 1 // Reset to page 1 on search
+        }
+      })
+    }
+  }, 300)
+}
+
+watch(searchText, (newVal) => {
+  debouncedSearch(newVal)
+})
+
+const highlightText = (text: string, query: string) => {
+  if (!query) return text
+  // Escape special characters in query to avoid regex errors
+  const escapedQuery = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+  const regex = new RegExp(`(${escapedQuery})`, 'gi')
+  return text.replace(regex, '<mark class="bg-yellow-200 text-gray-900 rounded-sm px-0.5">$1</mark>')
 }
 </script>

@@ -102,12 +102,19 @@ export const useProducts = () => {
     }
   ])
 
-  const getProducts = async (page: number = 1, limit: number = 8, category?: string): Promise<{ items: Product[], total: number }> => {
+  const getProducts = async (page: number = 1, limit: number = 8, category?: string, search?: string): Promise<{ items: Product[], total: number }> => {
     return new Promise((resolve) => {
       setTimeout(() => {
         let filtered = products.value
         if (category) {
           filtered = filtered.filter(p => p.category === category)
+        }
+        if (search) {
+          const q = search.toLowerCase()
+          filtered = filtered.filter(p => 
+            p.title.toLowerCase().includes(q) || 
+            p.description.toLowerCase().includes(q)
+          )
         }
         
         const total = filtered.length

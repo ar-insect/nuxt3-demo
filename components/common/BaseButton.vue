@@ -1,6 +1,8 @@
 <template>
-  <button
-    :type="type"
+  <component
+    :is="to ? NuxtLink : 'button'"
+    :to="to"
+    :type="!to ? type : undefined"
     :class="[
       'inline-flex items-center justify-center border font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed',
       sizeClasses[size],
@@ -35,10 +37,15 @@
     <slot name="prefix"></slot>
     <slot></slot>
     <slot name="suffix"></slot>
-  </button>
+  </component>
 </template>
 
 <script setup lang="ts">
+import { resolveComponent } from 'vue'
+import type { RouteLocationRaw } from 'vue-router'
+
+const NuxtLink = resolveComponent('NuxtLink')
+
 type ButtonType = 'button' | 'submit' | 'reset'
 type ButtonSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl'
 type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'danger' | 'success' | 'ghost'
@@ -51,6 +58,7 @@ interface Props {
   loading?: boolean
   disabled?: boolean
   rounded?: boolean
+  to?: RouteLocationRaw
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -60,7 +68,8 @@ const props = withDefaults(defineProps<Props>(), {
   block: false,
   loading: false,
   disabled: false,
-  rounded: true
+  rounded: true,
+  to: undefined
 })
 
 defineEmits(['click'])

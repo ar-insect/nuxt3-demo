@@ -23,10 +23,21 @@
         :placeholder="placeholder"
         :disabled="disabled"
       />
-      <div v-if="$slots.suffix" class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+      <div v-if="$slots.suffix || (clearable && modelValue)" class="absolute inset-y-0 right-0 pr-3 flex items-center">
+        <button 
+          v-if="clearable && modelValue" 
+          type="button"
+          @click="clearInput"
+          class="text-gray-400 hover:text-gray-500 focus:outline-none mr-1"
+        >
+          <span class="sr-only">Clear</span>
+          <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
         <slot name="suffix"></slot>
       </div>
-      <div v-if="error && !$slots.suffix" class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+      <div v-if="error && !$slots.suffix && !clearable" class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
         <svg class="h-5 w-5 text-red-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
           <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
         </svg>
@@ -51,16 +62,23 @@ interface Props {
   error?: string
   hint?: string
   disabled?: boolean
+  clearable?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
   type: 'text',
   modelValue: '',
-  disabled: false
+  disabled: false,
+  clearable: false
 })
 
 const uid = useId()
 const inputId = computed(() => props.id || uid)
 
-defineEmits(['update:modelValue'])
+const emit = defineEmits(['update:modelValue', 'clear'])
+
+const clearInput = () => {
+  emit('update:modelValue', '')
+  emit('clear')
+}
 </script>
